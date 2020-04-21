@@ -19,7 +19,61 @@ public class Bishop extends Figure {
 
     @Override
     public boolean canMove(int x, int y, Game game) {
-        return true;
+        if(Math.abs(this.getX() - x) == Math.abs(this.getY() - y)) {
+
+            if(game.getFigure(x, y) != null && game.getFigure(x, y).isWhite == this.isWhite())
+                return false;
+
+            int tmpX;
+            int tmpY;
+
+            if(this.getX() > x && this.getY() > y) {
+                tmpX = this.getX() - 1;
+                tmpY = this.getY() - 1;
+                while(tmpX > x) {
+                    if(game.getFigure(tmpX, tmpY) != null)
+                        return false;
+                    tmpX--;
+                    tmpY--;
+                }
+            }
+
+            if(this.getX() < x && this.getY() < y) {
+                tmpX = this.getX() + 1;
+                tmpY = this.getY() + 1;
+                while(tmpX < x) {
+                    if(game.getFigure(tmpX, tmpY) != null)
+                        return false;
+                    tmpX++;
+                    tmpY++;
+                }
+
+            }
+
+            if(this.getX() > x && this.getY() < y) {
+                tmpX = this.getX() - 1;
+                tmpY = this.getY() + 1;
+                while(tmpX > x) {
+                    if(game.getFigure(tmpX, tmpY) != null)
+                        return false;
+                    tmpX--;
+                    tmpY++;
+                }
+            }
+
+            if(this.getX() < x && this.getY() > y) {
+                tmpX = this.getX() + 1;
+                tmpY = this.getY() - 1;
+                while(tmpX < x) {
+                    if(game.getFigure(tmpX, tmpY) != null)
+                        return false;
+                    tmpX++;
+                    tmpY--;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
 }

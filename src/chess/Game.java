@@ -142,6 +142,8 @@ public class Game {
             isWhiteTurn = !isWhiteTurn;
 
         }
+        getTile(selectedFigure.getX(), selectedFigure.getY()).setSelected(false);
+        getTile(selectedFigure.getX(), selectedFigure.getY()).repaint();
         isSelected = false;
 
     }
