@@ -19,7 +19,12 @@ public class King extends Figure {
 
     @Override
     public boolean canMove(int x, int y, Game game) {
-        return true;
+        if(Math.abs(this.getX() - x ) <= 1 && Math.abs(this.getY() - y) <= 1) {
+            if(game.getFigure(x,y) != null && game.getFigure(x, y).isWhite == this.isWhite())
+                return false;
+            return true;
+        }
+        return false;
     }
 
 
