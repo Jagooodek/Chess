@@ -32,7 +32,6 @@ public class Tile extends JPanel {
             figure.setX(this.x);
             figure.setY(this.y);
         }
-
     }
 
     public Figure getFigure() {
