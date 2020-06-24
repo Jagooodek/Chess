@@ -9,23 +9,14 @@ import java.util.HashSet;
 
 public class Queen extends Figure {
 
-    public Queen(int x, int y, String folderPath, boolean isWhite, Game game) {
-        super(x, y, folderPath, isWhite, game);
-    }
-
-    @Override
-    public String getPath() {
-        if(this.isWhite()) {
-            return "w_queen.png";
-        }   else {
-            return "b_queen.png";
-        }
+    public Queen(int x, int y, boolean isWhite, Game game) {
+        super(x, y, isWhite, game);
     }
 
     @Override
     public ArrayList<Move> getPossibleMoves() {
-        Rook rook = new Rook(getX(), getY(), "resources", isWhite(), getGame());
-        Bishop bishop = new Bishop(getX(), getY(), "resources", isWhite(), getGame());
+        Rook rook = new Rook(getX(), getY(), isWhite(), getGame());
+        Bishop bishop = new Bishop(getX(), getY(), isWhite(), getGame());
         HashSet<Move> hashSet = new HashSet<Move>();
         hashSet.addAll(rook.getPossibleMoves());
         hashSet.addAll(bishop.getPossibleMoves());
@@ -34,5 +25,9 @@ public class Queen extends Figure {
         return arrayList;
     }
 
+    @Override
+    public String toString() {
+        return (isWhite()?"w":"b") + "_queen";
+    }
 
 }

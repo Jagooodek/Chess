@@ -7,18 +7,8 @@ import java.util.ArrayList;
 
 public class Bishop extends Figure {
 
-
-    public Bishop(int x, int y, String folderPath, boolean isWhite, Game game) {
-        super(x, y, folderPath, isWhite, game);
-    }
-
-    @Override
-    public String getPath() {
-        if(this.isWhite()) {
-            return "w_bishop.png";
-        }   else {
-            return "b_bishop.png";
-        }
+    public Bishop(int x, int y, boolean isWhite, Game game) {
+        super(x, y, isWhite, game);
     }
 
     @Override
@@ -83,5 +73,8 @@ public class Bishop extends Figure {
         return arrayList;
     }
 
-
+    @Override
+    public String toString() {
+        return (isWhite()?"w":"b") + "_bishop";
+    }
 }

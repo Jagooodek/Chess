@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Chess_jar</output-path>
     <root id="archive" name="Chess.jar">
       <element id="module-output" name="Chess" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/annotations-19.0.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/junit-jupiter-5.4.2.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/junit-jupiter-api-5.4.2.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/apiguardian-api-1.0.0.jar" path-in-jar="/" />
@@ -11,26 +12,7 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/junit-jupiter-params-5.4.2.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/junit-jupiter-engine-5.4.2.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/junit-platform-engine-1.4.2.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/lib/annotations-19.0.0.jar" path-in-jar="/" />
-      <element id="directory" name="resources">
-        <element id="file-copy" path="$PROJECT_DIR$/resources/b_bishop.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/b_king.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/b_knight.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/b_pawn.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/b_queen.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/b_rook.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/brown1.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/brown2.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/gray1.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/gray2.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/selected.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/w_bishop.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/w_king.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/w_knight.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/w_pawn.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/w_queen.png" />
-        <element id="file-copy" path="$PROJECT_DIR$/resources/w_rook.png" />
-      </element>
+      <element id="dir-copy" path="$PROJECT_DIR$/resources" />
     </root>
   </artifact>
 </component>

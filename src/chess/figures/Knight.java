@@ -7,18 +7,8 @@ import java.util.ArrayList;
 
 public class Knight extends Figure {
 
-
-    public Knight(int x, int y, String folderPath, boolean isWhite, Game game) {
-        super(x, y, folderPath, isWhite, game);
-    }
-
-    @Override
-    public String getPath() {
-        if(this.isWhite()) {
-            return "w_knight.png";
-        }   else {
-            return "b_knight.png";
-        }
+    public Knight(int x, int y, boolean isWhite, Game game) {
+        super(x, y, isWhite, game);
     }
 
     @Override
@@ -43,7 +33,10 @@ public class Knight extends Figure {
         return answer;
     }
 
-
+    @Override
+    public String toString() {
+        return (isWhite()?"w":"b") + "_knight";
+    }
 }
 
 

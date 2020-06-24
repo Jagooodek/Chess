@@ -6,7 +6,7 @@ public class Move {
     private int y1;
     private int y2;
     private boolean castle;
-    Move castleMove;
+    private Move castleMove;
 
 
     public boolean isCastle() {
@@ -25,14 +25,14 @@ public class Move {
         this.castle = false;
     }
 
-    public Move(int x1, int y1, int x2, int y2, boolean castle) {
+    public Move(int x1, int y1, int x2, int y2, Move castleMove) {
         this.x1 = x1;
         this.x2 = x2;
         this.y1 = y1;
         this.y2 = y2;
-        this.castle = castle;
+        this.castle = castleMove != null;
         if(castle) {
-            castleMove = new Move(x2,y2,x1,y1);
+            this.castleMove = castleMove;
         }
     }
 

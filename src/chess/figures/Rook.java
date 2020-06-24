@@ -7,18 +7,8 @@ import java.util.ArrayList;
 
 public class Rook extends Figure {
 
-
-    public Rook(int x, int y, String folderPath, boolean isWhite, Game game) {
-        super(x, y, folderPath, isWhite, game);
-    }
-
-    @Override
-    public String getPath() {
-        if(this.isWhite()) {
-            return "w_rook.png";
-        }   else {
-            return "b_rook.png";
-        }
+    public Rook(int x, int y, boolean isWhite, Game game) {
+        super(x, y, isWhite, game);
     }
 
     @Override
@@ -86,5 +76,8 @@ public class Rook extends Figure {
         return arrayList;
     }
 
-
+    @Override
+    public String toString() {
+        return (isWhite()?"w":"b") + "_rook";
+    }
 }

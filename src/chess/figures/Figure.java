@@ -1,11 +1,9 @@
 package chess.figures;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 import chess.Game;
 import chess.Move;
-import chess.Tile;
 
 public abstract class Figure {
 
@@ -15,21 +13,15 @@ public abstract class Figure {
     private boolean isWhite;
     private boolean moved;
 
-    private String folderPath;
-    private Image image;
-
-
 
     private Game game;
 
-    public Figure(int x, int y, String folderPath, boolean isWhite, Game game) {
+    public Figure(int x, int y, boolean isWhite, Game game) {
         this.game = game;
         this.x = x;
         this.y = y;
         this.isWhite = isWhite;
-        this.folderPath = folderPath;
         this.moved = false;
-        loadImage();
     }
 
     public boolean hasMoved() {
@@ -41,26 +33,26 @@ public abstract class Figure {
     }
 
     protected boolean isPossibleCapture(Move move) {
-        if(this.game.getFigure(move.getX2(), move.getY2()) == null)
-            return false;
-        if(this.game.getFigure(move.getX2(), move.getY2()).isWhite != this.isWhite)
-            return true;
+        if(move.getX2() <= 8 && move.getX2() >= 1 && move.getY2() <= 8 && move.getY2() >= 1) {
+            if(this.game.getFigure(move.getX2(), move.getY2()) == null)
+                return false;
+            if(this.game.getFigure(move.getX2(), move.getY2()).isWhite != this.isWhite)
+                return true;
+        }
         return false;
     }
 
     protected boolean isPossibleMove(Move move) {
-        if(game.getFigure(move.getX2(), move.getY2()) == null)
-            return true;
+        if(move.getX2() <= 8 && move.getX2() >= 1 && move.getY2() <= 8 && move.getY2() >= 1) {
+            if(game.getFigure(move.getX2(), move.getY2()) == null)
+                return true;
+        }
         return false;
     }
 
-    public abstract String getPath();
-
     public abstract ArrayList<Move> getPossibleMoves();
 
-    private void loadImage() {
-        image = Toolkit.getDefaultToolkit().getImage(folderPath + "/" + getPath());
-    }
+    public abstract String toString();
 
     public int getX() {
         return x;
@@ -80,10 +72,6 @@ public abstract class Figure {
 
     public void setY(int y) {
         this.y = y;
-    }
-
-    public Image getImage() {
-        return image;
     }
 
     public boolean isWhite() {

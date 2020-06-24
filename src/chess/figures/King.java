@@ -7,18 +7,8 @@ import java.util.ArrayList;
 
 public class King extends Figure {
 
-
-    public King(int x, int y, String folderPath, boolean isWhite, Game game) {
-        super(x, y, folderPath, isWhite, game);
-    }
-
-    @Override
-    public String getPath() {
-        if(this.isWhite()) {
-            return "w_king.png";
-        }   else {
-            return "b_king.png";
-        }
+    public King(int x, int y, boolean isWhite, Game game) {
+        super(x, y, isWhite, game);
     }
 
     @Override
@@ -35,13 +25,13 @@ public class King extends Figure {
 
         if(getGame().getFigure(getX()+1,getY()) == null && getGame().getFigure(getX()+2,getY()) == null) {
             if(!hasMoved() && !getGame().getFigure(getX()+3, getY()).hasMoved()) {
-                arrayList.add(new Move(getX(),getY(),getX()+3,getY(), true));
+                arrayList.add(new Move(getX(),getY(),getX()+2,getY(), new Move(getX()+3, getY(),getX()+1, getY())));
             }
         }
 
-        if(getGame().getFigure(getX()+1,getY()) == null && getGame().getFigure(getX()+2,getY()) == null && getGame().getFigure(getX()+3,getY()) == null) {
-            if(!hasMoved() && !getGame().getFigure(getX()+4, getY()).hasMoved()) {
-                arrayList.add(new Move(getX(),getY(),getX()+4,getY(), true));
+        if(getGame().getFigure(getX()-1,getY()) == null && getGame().getFigure(getX()-2,getY()) == null && getGame().getFigure(getX()-3,getY()) == null) {
+            if(!hasMoved() && !getGame().getFigure(getX()-4, getY()).hasMoved()) {
+                arrayList.add(new Move(getX(),getY(),getX()-2,getY(), new Move(getX()-4, getY(), getX() - 1, getY())));
             }
         }
 
@@ -50,8 +40,9 @@ public class King extends Figure {
         return arrayList;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return (isWhite()?"w":"b") + "_king";
+    }
 
 }

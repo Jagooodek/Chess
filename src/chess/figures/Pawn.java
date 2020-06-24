@@ -7,19 +7,9 @@ import java.util.ArrayList;
 
 public class Pawn extends Figure {
 
-    public Pawn(int x, int y, String folderPath, boolean isWhite, Game game) {
-        super(x, y, folderPath, isWhite, game);
+    public Pawn(int x, int y, boolean isWhite, Game game) {
+        super(x, y, isWhite, game);
     }
-
-    @Override
-    public String getPath() {
-        if(this.isWhite()) {
-            return "w_pawn.png";
-        }   else {
-            return "b_pawn.png";
-        }
-    }
-
 
     @Override
     public ArrayList<Move> getPossibleMoves() {
@@ -41,13 +31,18 @@ public class Pawn extends Figure {
         if(isPossibleCapture(move))
             arrayList.add(move);
 
-        move = new Move(x,y,this.isWhite()?x+1:x-1,this.isWhite()?y+1:y-1);
+        move = new Move(x,y,this.isWhite()?x-1:x+1,this.isWhite()?y+1:y-1);
         if(isPossibleCapture(move))
             arrayList.add(move);
 
         return arrayList;
 
 
+    }
+
+    @Override
+    public String toString() {
+        return (isWhite()?"w":"b") + "_pawn";
     }
 
 }
