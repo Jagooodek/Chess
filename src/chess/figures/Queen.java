@@ -1,18 +1,21 @@
 package chess.figures;
 
 import chess.Game;
+import chess.Move;
 
 import javax.swing.table.TableRowSorter;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Queen extends Figure {
 
-    public Queen(int x, int y, String path, boolean isWhite) {
-        super(x, y, path, isWhite);
+    public Queen(int x, int y, String folderPath, boolean isWhite, Game game) {
+        super(x, y, folderPath, isWhite, game);
     }
 
     @Override
     public String getPath() {
-        if(this.isWhite) {
+        if(this.isWhite()) {
             return "w_queen.png";
         }   else {
             return "b_queen.png";
@@ -20,106 +23,15 @@ public class Queen extends Figure {
     }
 
     @Override
-    public boolean canMove(int x, int y, Game game) {
-        if(game.getFigure(x, y) != null && game.getFigure(x, y).isWhite() == this.isWhite())
-            return false;
-        if(this.getX() == x) {
-            int tmpY = this.getY();
-            if(tmpY > y) {
-                tmpY --;
-                while(tmpY > y) {
-                    if(game.getFigure(x, tmpY) != null)
-                        return false;
-                    tmpY --;
-                }
-                return true;
-            }
-            if(tmpY < y) {
-                tmpY ++;
-                while(tmpY <  y) {
-                    if(game.getFigure(x, tmpY) != null)
-                        return false;
-                    tmpY ++;
-                }
-                return true;
-            }
-        }
-
-        if(this.getY() == y) {
-            int tmpX = this.getX();
-            if(tmpX > x) {
-                tmpX --;
-                while(tmpX > x) {
-                    if(game.getFigure(tmpX, y) != null)
-                        return false;
-                    tmpX --;
-                }
-                return true;
-            }
-            if(tmpX < x) {
-                tmpX ++;
-                while(tmpX<  x) {
-                    if(game.getFigure(tmpX, y) != null)
-                        return false;
-                    tmpX++;
-                }
-                return true;
-            }
-        }
-
-        if(Math.abs(this.getX() - x) == Math.abs(this.getY() - y)) {
-
-            int tmpX;
-            int tmpY;
-
-            if(this.getX() > x && this.getY() > y) {
-                tmpX = this.getX() - 1;
-                tmpY = this.getY() - 1;
-                while(tmpX > x) {
-                    if(game.getFigure(tmpX, tmpY) != null)
-                        return false;
-                    tmpX--;
-                    tmpY--;
-                }
-            }
-
-            if(this.getX() < x && this.getY() < y) {
-                tmpX = this.getX() + 1;
-                tmpY = this.getY() + 1;
-                while(tmpX < x) {
-                    if(game.getFigure(tmpX, tmpY) != null)
-                        return false;
-                    tmpX++;
-                    tmpY++;
-                }
-
-            }
-
-            if(this.getX() > x && this.getY() < y) {
-                tmpX = this.getX() - 1;
-                tmpY = this.getY() + 1;
-                while(tmpX > x) {
-                    if(game.getFigure(tmpX, tmpY) != null)
-                        return false;
-                    tmpX--;
-                    tmpY++;
-                }
-            }
-
-            if(this.getX() < x && this.getY() > y) {
-                tmpX = this.getX() + 1;
-                tmpY = this.getY() - 1;
-                while(tmpX < x) {
-                    if(game.getFigure(tmpX, tmpY) != null)
-                        return false;
-                    tmpX++;
-                    tmpY--;
-                }
-            }
-            return true;
-        }
-        return false;
-
+    public ArrayList<Move> getPossibleMoves() {
+        Rook rook = new Rook(getX(), getY(), "resources", isWhite(), getGame());
+        Bishop bishop = new Bishop(getX(), getY(), "resources", isWhite(), getGame());
+        HashSet<Move> hashSet = new HashSet<Move>();
+        hashSet.addAll(rook.getPossibleMoves());
+        hashSet.addAll(bishop.getPossibleMoves());
+        ArrayList<Move> arrayList = new ArrayList<Move>();
+        arrayList.addAll(hashSet);
+        return arrayList;
     }
 
 

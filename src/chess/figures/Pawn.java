@@ -1,70 +1,53 @@
 package chess.figures;
 
 import chess.Game;
+import chess.Move;
+
+import java.util.ArrayList;
 
 public class Pawn extends Figure {
 
-    public Pawn(int x, int y, String path, boolean isWhite) {
-        super(x, y, path, isWhite);
+    public Pawn(int x, int y, String folderPath, boolean isWhite, Game game) {
+        super(x, y, folderPath, isWhite, game);
     }
 
     @Override
     public String getPath() {
-        if(this.isWhite) {
+        if(this.isWhite()) {
             return "w_pawn.png";
         }   else {
             return "b_pawn.png";
         }
     }
 
+
     @Override
-    public boolean canMove(int x, int y, Game game) {
-        if(isWhite) {
-            if(this.getX() == x) {
-                if(this.getY() + 1 == y) {
-                    if(game.getFigure(x, y) == null) {
-                        return true;
-                    }
-                }
+    public ArrayList<Move> getPossibleMoves() {
 
-                if(this.getY() == 2 && y == 4) {
-                    if(game.getFigure(x, 3) == null && game.getFigure(x, y) == null) {
-                        return true;
-                    }
-                }
-            }
+        int x = this.getX();
+        int y = this.getY();
+        ArrayList<Move> arrayList = new ArrayList<>();
+        Move move;
 
-            if((Math.abs(this.getX() - x) == 1) && (y - this.getY() == 1)) {
-                if(game.getFigure(x, y) != null) {
-                    if(!game.getFigure(x, y).isWhite) {
-                        return true;
-                    }
-                }
-            }
-        } else {
-            if(this.getX() == x) {
-                if(this.getY() - 1 == y) {
-                    if(game.getFigure(x, y) == null) {
-                        return true;
-                    }
-                }
-
-                if(this.getY() == 7 && y == 5) {
-                    if(game.getFigure(x, 6) == null && game.getFigure(x, y) == null) {
-                        return true;
-                    }
-                }
-            }
-
-            if((Math.abs(this.getX() - x) == 1) && (y - this.getY() == -1)) {
-                if(game.getFigure(x, y) != null) {
-                    if(game.getFigure(x, y).isWhite) {
-                        return true;
-                    }
-                }
-            }
+        move = new Move(x,y,x,this.isWhite()?y+1:y-1);
+        if(this.isPossibleMove(move)) {
+            arrayList.add(move);
+            move = new Move(x,y,x,this.isWhite()?y+2:y-2);
+            if(!this.hasMoved() && isPossibleMove(move))
+                arrayList.add(move);
         }
-        return false;
+
+        move = new Move(x,y,this.isWhite()?x+1:x-1,this.isWhite()?y+1:y-1);
+        if(isPossibleCapture(move))
+            arrayList.add(move);
+
+        move = new Move(x,y,this.isWhite()?x+1:x-1,this.isWhite()?y+1:y-1);
+        if(isPossibleCapture(move))
+            arrayList.add(move);
+
+        return arrayList;
+
+
     }
 
 }

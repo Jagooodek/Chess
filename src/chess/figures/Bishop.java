@@ -1,16 +1,20 @@
 package chess.figures;
 
 import chess.Game;
+import chess.Move;
+
+import java.util.ArrayList;
 
 public class Bishop extends Figure {
 
-    public Bishop(int x, int y, String path, boolean isWhite) {
-        super(x, y, path, isWhite);
+
+    public Bishop(int x, int y, String folderPath, boolean isWhite, Game game) {
+        super(x, y, folderPath, isWhite, game);
     }
 
     @Override
     public String getPath() {
-        if(this.isWhite) {
+        if(this.isWhite()) {
             return "w_bishop.png";
         }   else {
             return "b_bishop.png";
@@ -18,62 +22,66 @@ public class Bishop extends Figure {
     }
 
     @Override
-    public boolean canMove(int x, int y, Game game) {
-        if(Math.abs(this.getX() - x) == Math.abs(this.getY() - y)) {
+    public ArrayList<Move> getPossibleMoves() {
+        ArrayList<Move> arrayList = new ArrayList<Move>();
 
-            if(game.getFigure(x, y) != null && game.getFigure(x, y).isWhite == this.isWhite())
-                return false;
+        Move move;
+        int x = this.getX();
+        int y = this.getY();
 
-            int tmpX;
-            int tmpY;
-
-            if(this.getX() > x && this.getY() > y) {
-                tmpX = this.getX() - 1;
-                tmpY = this.getY() - 1;
-                while(tmpX > x) {
-                    if(game.getFigure(tmpX, tmpY) != null)
-                        return false;
-                    tmpX--;
-                    tmpY--;
-                }
+        while(x-- >= 1 && y-- >= 1) {
+            move = new Move(this.getX(), this.getY(), x, y);
+            if(isPossibleMove(move)) {
+                arrayList.add(move);
+            } else {
+                if(isPossibleCapture(move))
+                    arrayList.add(move);
+                break;
             }
-
-            if(this.getX() < x && this.getY() < y) {
-                tmpX = this.getX() + 1;
-                tmpY = this.getY() + 1;
-                while(tmpX < x) {
-                    if(game.getFigure(tmpX, tmpY) != null)
-                        return false;
-                    tmpX++;
-                    tmpY++;
-                }
-
-            }
-
-            if(this.getX() > x && this.getY() < y) {
-                tmpX = this.getX() - 1;
-                tmpY = this.getY() + 1;
-                while(tmpX > x) {
-                    if(game.getFigure(tmpX, tmpY) != null)
-                        return false;
-                    tmpX--;
-                    tmpY++;
-                }
-            }
-
-            if(this.getX() < x && this.getY() > y) {
-                tmpX = this.getX() + 1;
-                tmpY = this.getY() - 1;
-                while(tmpX < x) {
-                    if(game.getFigure(tmpX, tmpY) != null)
-                        return false;
-                    tmpX++;
-                    tmpY--;
-                }
-            }
-            return true;
         }
-        return false;
+
+        x = this.getX();
+        y = this.getY();
+        while(x-- >= 1 && y++ <= 8) {
+            move = new Move(this.getX(), this.getY(), x, y);
+            if(isPossibleMove(move)) {
+                arrayList.add(move);
+            } else {
+                if(isPossibleCapture(move))
+                    arrayList.add(move);
+                break;
+            }
+        }
+
+        x = this.getX();
+        y = this.getY();
+        while(x++ <= 8 && y++ <= 8) {
+            move = new Move(this.getX(), this.getY(), x, y);
+            if(isPossibleMove(move)) {
+                arrayList.add(move);
+            } else {
+                if(isPossibleCapture(move))
+                    arrayList.add(move);
+                break;
+            }
+        }
+
+        x = this.getX();
+        y = this.getY();
+        while(x++ <= 8 && y-- >= 1) {
+            move = new Move(this.getX(), this.getY(), x, y);
+            if(isPossibleMove(move)) {
+                arrayList.add(move);
+            } else {
+                if(isPossibleCapture(move))
+                    arrayList.add(move);
+                break;
+            }
+        }
+
+
+        return arrayList;
     }
+
 
 }

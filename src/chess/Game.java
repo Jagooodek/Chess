@@ -50,30 +50,30 @@ public class Game {
 
 
         for (int i = 0; i < 8; i++) {
-            figures.add(new Pawn(i + 1, 7, "resources", false));
-            figures.add(new Pawn(i + 1, 2, "resources", true));
+            figures.add(new Pawn(i + 1, 7, "resources", false, this));
+            figures.add(new Pawn(i + 1, 2, "resources", true, this));
         }
 
-        figures.add(new Rook(1, 1, "resources", true));
-        figures.add(new Rook(8, 1, "resources", true));
-        figures.add(new Rook(8, 8, "resources", false));
-        figures.add(new Rook(1, 8, "resources", false));
+        figures.add(new Rook(1, 1, "resources", true, this));
+        figures.add(new Rook(8, 1, "resources", true, this));
+        figures.add(new Rook(8, 8, "resources", false, this));
+        figures.add(new Rook(1, 8, "resources", false, this));
 
-        figures.add(new Knight(2, 1, "resources", true));
-        figures.add(new Knight(7, 1, "resources", true));
-        figures.add(new Knight(2, 8, "resources", false));
-        figures.add(new Knight(7, 8, "resources", false));
+        figures.add(new Knight(2, 1, "resources", true, this));
+        figures.add(new Knight(7, 1, "resources", true, this));
+        figures.add(new Knight(2, 8, "resources", false, this));
+        figures.add(new Knight(7, 8, "resources", false, this));
 
-        figures.add(new Bishop(3, 1, "resources", true));
-        figures.add(new Bishop(6, 1, "resources", true));
-        figures.add(new Bishop(3, 8, "resources", false));
-        figures.add(new Bishop(6, 8, "resources", false));
+        figures.add(new Bishop(3, 1, "resources", true, this));
+        figures.add(new Bishop(6, 1, "resources", true, this));
+        figures.add(new Bishop(3, 8, "resources", false, this));
+        figures.add(new Bishop(6, 8, "resources", false, this));
 
-        figures.add(new Queen(4,1, "resources", true));
-        figures.add(new Queen(4,8, "resources", false));
+        figures.add(new Queen(4,1, "resources", true, this));
+        figures.add(new Queen(4,8, "resources", false, this));
 
-        figures.add(new King(5,1, "resources", true));
-        figures.add(new King(5,8, "resources", false));
+        figures.add(new King(5,1, "resources", true, this));
+        figures.add(new King(5,8, "resources", false, this));
 
     }
 
@@ -129,25 +129,9 @@ public class Game {
         return getTile(figure.getX(), figure.getY());
     }
 
-    private void print() {
-        for (int j = 8; j > 0; j--) {
-            for (int i = 1; i <= 8; i++) {
-                if(getFigure(i,j) == null) {
-                    System.out.print("null  ");
-                } else if(getFigure(i,j).isWhite()) {
-                    System.out.print("white ");
-                } else {
-                    System.out.print("black ");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println();
-    }
+
 
     private void select(Tile tile) {
-        
         Figure figure = tile.getFigure();
         if(figure != null) {
             if(isWhiteTurn == figure.isWhite()) {
@@ -162,11 +146,17 @@ public class Game {
 
         getTile(selectedFigure).setSelected(false);
         isSelected = false;
+        if(selectedFigure.getPossibleMoves().contains(new Move(selectedFigure.getX(), selectedFigure.getY(),tile.getTileX(), tile.getTileY()))) {
 
-        if(selectedFigure.canMove(tile, this)) {
-
-            if(tile.getFigure() != null)
+            if(tile.getFigure() != null) {
                 figures.remove(tile.getFigure());
+                if(tile.getFigure() instanceof King) {
+                    gameFrame.removeAll();
+                    gameFrame.pack();
+                }
+
+            }
+
 
             selectedFigure.setX(tile.getTileX());
             selectedFigure.setY(tile.getTileY());

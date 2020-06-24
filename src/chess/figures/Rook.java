@@ -1,16 +1,20 @@
 package chess.figures;
 
 import chess.Game;
+import chess.Move;
+
+import java.util.ArrayList;
 
 public class Rook extends Figure {
 
-    public Rook(int x, int y, String path, boolean isWhite) {
-        super(x, y, path, isWhite);
+
+    public Rook(int x, int y, String folderPath, boolean isWhite, Game game) {
+        super(x, y, folderPath, isWhite, game);
     }
 
     @Override
     public String getPath() {
-        if(this.isWhite) {
+        if(this.isWhite()) {
             return "w_rook.png";
         }   else {
             return "b_rook.png";
@@ -18,53 +22,68 @@ public class Rook extends Figure {
     }
 
     @Override
-    public boolean canMove(int x, int y, Game game) {
-        if(game.getFigure(x, y) != null && game.getFigure(x, y).isWhite() == this.isWhite())
-            return false;
-        if(this.getX() == x) {
-            int tmpY = this.getY();
-            if(tmpY > y) {
-                tmpY --;
-                while(tmpY > y) {
-                    if(game.getFigure(x, tmpY) != null)
-                        return false;
-                    tmpY --;
-                }
-                return true;
-            }
-            if(tmpY < y) {
-                tmpY ++;
-                while(tmpY <  y) {
-                    if(game.getFigure(x, tmpY) != null)
-                        return false;
-                    tmpY ++;
-                }
-                return true;
+    public ArrayList<Move> getPossibleMoves() {
+
+        ArrayList<Move> arrayList = new ArrayList<Move>();
+        Move move;
+
+        int x = this.getX();
+        int y = this.getY();
+
+        while(x++ <= 8) {
+            move = new Move(this.getX(), this.getY(), x, y);
+            if(isPossibleMove(move)) {
+                arrayList.add(move);
+            } else {
+                if(isPossibleCapture(move))
+                    arrayList.add(move);
+                break;
             }
         }
 
-        if(this.getY() == y) {
-            int tmpX = this.getX();
-            if(tmpX > x) {
-                tmpX --;
-                while(tmpX > x) {
-                    if(game.getFigure(tmpX, y) != null)
-                        return false;
-                    tmpX --;
-                }
-                return true;
-            }
-            if(tmpX < x) {
-                tmpX ++;
-                while(tmpX<  x) {
-                    if(game.getFigure(tmpX, y) != null)
-                        return false;
-                    tmpX++;
-                }
-                return true;
+        x = getX();
+        y = getY();
+
+        while(x-- >= 1) {
+            move = new Move(this.getX(), this.getY(), x, y);
+            if(isPossibleMove(move)) {
+                arrayList.add(move);
+            } else {
+                if(isPossibleCapture(move))
+                    arrayList.add(move);
+                break;
             }
         }
-        return false;
+
+        x = getX();
+        y = getY();
+
+        while(y-- >= 1) {
+            move = new Move(this.getX(), this.getY(), x, y);
+            if(isPossibleMove(move)) {
+                arrayList.add(move);
+            } else {
+                if(isPossibleCapture(move))
+                    arrayList.add(move);
+                break;
+            }
+        }
+
+        x = getX();
+        y = getY();
+
+        while(y++ <= 8) {
+            move = new Move(this.getX(), this.getY(), x, y);
+            if(isPossibleMove(move)) {
+                arrayList.add(move);
+            } else {
+                if(isPossibleCapture(move))
+                    arrayList.add(move);
+                break;
+            }
+        }
+
+        return arrayList;
     }
 
 
