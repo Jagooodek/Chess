@@ -9,14 +9,14 @@ import java.util.HashSet;
 
 public class Queen extends Figure {
 
-    public Queen(int x, int y, boolean isWhite, Game game) {
-        super(x, y, isWhite, game);
+    public Queen(Square square, boolean isWhite, Game game) {
+        super(square, isWhite, game);
     }
 
     @Override
     public ArrayList<Move> getPossibleMoves() {
-        Rook rook = new Rook(getX(), getY(), isWhite(), getGame());
-        Bishop bishop = new Bishop(getX(), getY(), isWhite(), getGame());
+        Rook rook = new Rook(this.getSquare(), isWhite(), getGame());
+        Bishop bishop = new Bishop(this.getSquare(), isWhite(), getGame());
         HashSet<Move> hashSet = new HashSet<Move>();
         hashSet.addAll(rook.getPossibleMoves());
         hashSet.addAll(bishop.getPossibleMoves());

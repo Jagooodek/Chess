@@ -2,14 +2,14 @@ package chessGame;
 
 import chess.Move;
 import chess.figures.Figure;
+import chess.figures.Square;
 import sun.awt.image.ToolkitImage;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Tile extends JPanel {
-    private int x;
-    private int y;
+    private Square square;
     private Image image;
     private Image selectedImage;
     private Image moveImage;
@@ -18,10 +18,9 @@ public class Tile extends JPanel {
     private boolean white;
     private Move move;
 
-    public Tile(int x, int y, int size, Boolean white) {
+    public Tile(Square square, int size, Boolean white) {
         super();
-        this.x = x;
-        this.y = y;
+        this.square = square;
         this.setSize(size, size);
         this.white = white;
         String path = "resources/brown" + (white?"1":"2") + ".png";
@@ -44,22 +43,14 @@ public class Tile extends JPanel {
 
     public void setFigure(Figure figure) {
         this.figure = figure;
-        if(figure != null) {
-            figure.setX(this.x);
-            figure.setY(this.y);
-        }
     }
 
     public Figure getFigure() {
         return figure;
     }
 
-    public int getTileX() {
-        return x;
-    }
-
-    public int getTileY() {
-        return y;
+    public Square getSquare() {
+        return square;
     }
 
     public void setSelected(Boolean isSelected) {

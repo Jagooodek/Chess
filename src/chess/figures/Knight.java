@@ -7,26 +7,27 @@ import java.util.ArrayList;
 
 public class Knight extends Figure {
 
-    public Knight(int x, int y, boolean isWhite, Game game) {
-        super(x, y, isWhite, game);
+    public Knight(Square square, boolean isWhite, Game game) {
+        super(square, isWhite, game);
     }
 
     @Override
     public ArrayList<Move> getPossibleMoves() {
         ArrayList<Move> arrayList = new ArrayList<Move>();
 
-        arrayList.add(new Move(this.getX(), this.getY(), this.getX() + 2, this.getY() + 1));
-        arrayList.add(new Move(this.getX(), this.getY(), this.getX() + 2, this.getY() - 1));
-        arrayList.add(new Move(this.getX(), this.getY(), this.getX() + 1, this.getY() + 2));
-        arrayList.add(new Move(this.getX(), this.getY(), this.getX() + 1, this.getY() - 2));
-        arrayList.add(new Move(this.getX(), this.getY(), this.getX() - 2, this.getY() + 1));
-        arrayList.add(new Move(this.getX(), this.getY(), this.getX() - 2, this.getY() - 1));
-        arrayList.add(new Move(this.getX(), this.getY(), this.getX() - 1, this.getY() + 2));
-        arrayList.add(new Move(this.getX(), this.getY(), this.getX() - 1, this.getY() + 2));
+        arrayList.add(new Move(this.getSquare(), new Square(this.getSquare(),2,1)));
+        arrayList.add(new Move(this.getSquare(), new Square(this.getSquare(),2,-1)));
+        arrayList.add(new Move(this.getSquare(), new Square(this.getSquare(),-2,1)));
+        arrayList.add(new Move(this.getSquare(), new Square(this.getSquare(),-2,1)));
+        arrayList.add(new Move(this.getSquare(), new Square(this.getSquare(),1,2)));
+        arrayList.add(new Move(this.getSquare(), new Square(this.getSquare(),1,-2)));
+        arrayList.add(new Move(this.getSquare(), new Square(this.getSquare(),-1,2)));
+        arrayList.add(new Move(this.getSquare(), new Square(this.getSquare(),-1,-2)));
+
 
         ArrayList<Move> answer = new ArrayList<Move>();
         for (Move move : arrayList) {
-            if(isPossibleCapture(move) || isPossibleMove(move)) {
+            if(isLegalCapture(move) || isLegalMove(move)) {
                 answer.add(move);
             }
         }

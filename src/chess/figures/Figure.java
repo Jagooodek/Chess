@@ -7,44 +7,46 @@ import chess.Move;
 
 public abstract class Figure {
 
-    private int x;
-    private int y;
+    private Square square;
 
     private boolean isWhite;
-    private boolean moved;
-
+    private int moves;
 
     private Game game;
 
-    public Figure(int x, int y, boolean isWhite, Game game) {
+    public Figure(Square square, boolean isWhite, Game game) {
         this.game = game;
-        this.x = x;
-        this.y = y;
+        this.square = square;
         this.isWhite = isWhite;
-        this.moved = false;
+        moves = 0;
     }
 
     public boolean hasMoved() {
-        return this.moved;
+        if(moves == 0)
+            return false;
+        return true;
     }
 
     public void move() {
-        this.moved = true;
+        moves ++;
     }
 
-    protected boolean isPossibleCapture(Move move) {
-        if(move.getX2() <= 8 && move.getX2() >= 1 && move.getY2() <= 8 && move.getY2() >= 1) {
-            if(this.game.getFigure(move.getX2(), move.getY2()) == null)
+    public void undoMove() {
+        moves--;
+    }
+    protected boolean isLegalCapture(Move move) {
+        if(move.isPossible()) {
+            if(this.game.getFigure(move.getSquare2()) == null)
                 return false;
-            if(this.game.getFigure(move.getX2(), move.getY2()).isWhite != this.isWhite)
+            if(this.game.getFigure(move.getSquare2()).isWhite != this.isWhite)
                 return true;
         }
         return false;
     }
 
-    protected boolean isPossibleMove(Move move) {
-        if(move.getX2() <= 8 && move.getX2() >= 1 && move.getY2() <= 8 && move.getY2() >= 1) {
-            if(game.getFigure(move.getX2(), move.getY2()) == null)
+    protected boolean isLegalMove(Move move) {
+        if(move.isPossible()) {
+            if(game.getFigure(move.getSquare2()) == null)
                 return true;
         }
         return false;
@@ -56,26 +58,33 @@ public abstract class Figure {
         return getPossibleMoves();
     }
 
-    public abstract String toString();
-
-    public int getX() {
-        return x;
+    public ArrayList<Move> getLegalMoves() {
+        ArrayList<Move> arrayList = new ArrayList<>();
+        for(Move move:getPossibleMoves()) {
+            Game tmpGame = new Game();
+            ArrayList<Move> moves = this.game.getMoves();
+            for(int i = 0; i < moves.size(); i++) {
+                tmpGame.doMove(moves.get(i));
+            }
+            tmpGame.doMove(move);
+            if(!tmpGame.isChecked(this.isWhite()))
+                arrayList.add(move);
+        }
+        return arrayList;
     }
 
-    public int getY() {
-        return y;
+    public abstract String toString();
+
+    public Square getSquare() {
+        return square;
+    }
+
+    public void setSquare(Square square) {
+        this.square = square;
     }
 
     public Game getGame() {
         return game;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public boolean isWhite() {

@@ -22,6 +22,12 @@ public class Square {
         return y;
     }
 
+    public boolean isLegal() {
+        if(x >= 1 && x <=8 && y >= 1 && y <=8)
+            return true;
+        return false;
+    }
+
     @Override
     public boolean equals(Object o) {
         if(o instanceof Square) {
@@ -33,4 +39,9 @@ public class Square {
         return false;
     }
 
+    @Override
+    public String toString() {
+        String s = x + "x" + y;
+        return s;
+    }
 }

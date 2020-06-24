@@ -7,39 +7,78 @@ import java.util.ArrayList;
 
 public class King extends Figure {
 
-    public King(int x, int y, boolean isWhite, Game game) {
-        super(x, y, isWhite, game);
+    public King(Square square, boolean isWhite, Game game) {
+        super(square, isWhite, game);
+    }
+
+    private boolean isRightCastlePossible() {
+        Figure rook = this.getGame().getFigure(new Square(this.getSquare(),3,0));
+        if(!(rook instanceof Rook) && rook.hasMoved())
+            return false;
+
+        Square squareBetween1 = new Square(this.getSquare(),1,0);
+        Square squareBetween2 = new Square(this.getSquare(),2,0);
+        if(this.getGame().getFigure(squareBetween1) != null && this.getGame().getFigure(squareBetween2) != null)
+            return false;
+        if(getGame().getPossibleCaptureSquares(!isWhite()).contains(squareBetween1) || getGame().getPossibleCaptureSquares(!isWhite()).contains(squareBetween2))
+            return false;
+
+        return true;
+
+    }
+
+    private boolean isLeftCastlePossible() {
+        Figure rook = this.getGame().getFigure(new Square(this.getSquare(),-4,0));
+        if(!(rook instanceof Rook) && rook.hasMoved())
+            return false;
+
+        Square squareBetween1 = new Square(this.getSquare(),-1,0);
+        Square squareBetween2 = new Square(this.getSquare(),-2,0);
+        Square squareBetween3 = new Square(this.getSquare(),-3,0);
+        if(this.getGame().getFigure(squareBetween1) != null && this.getGame().getFigure(squareBetween2) != null && this.getGame().getFigure(squareBetween3) != null)
+            return false;
+
+        if(getGame().getPossibleCaptureSquares(!isWhite()).contains(squareBetween1) || getGame().getPossibleCaptureSquares(!isWhite()).contains(squareBetween2) || getGame().getPossibleCaptureSquares(!isWhite()).contains(squareBetween3))
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public ArrayList<Move> getPossibleCaptures() {
+        ArrayList<Move> arrayList = new ArrayList<>();
+
+        int x = this.getSquare().getX();
+        int y = this.getSquare().getY();
+
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1 ; j++) {
+                Move move = new Move(this.getSquare(), new Square(i,j));
+                if(this.isLegalCapture(move) || this.isLegalMove(move))
+                    arrayList.add(move);
+            }
+        }
+
+        return arrayList;
     }
 
     @Override
     public ArrayList<Move> getPossibleMoves() {
         ArrayList<Move> arrayList = new ArrayList<>();
+        arrayList.addAll(getPossibleCaptures());
+        if(!this.hasMoved()) {
+            if(isRightCastlePossible()) {
+                Move rookMove = new Move(new Square(this.getSquare(),3,0), new Square(this.getSquare(),1,0));
+                Move move = new Move(this.getSquare(), new Square(this.getSquare(), 2, 0), rookMove);
+                arrayList.add(move);
+            }
 
-        for (int i = this.getX() - 1; i <= this.getX() + 1; i++) {
-            for (int j = this.getY() - 1; j <= this.getY() + 1 ; j++) {
-                Move move = new Move(this.getX(), this.getY(), i, j);
-                if(this.isPossibleCapture(move) || this.isPossibleMove(move))
-                    arrayList.add(move);
+            if(isLeftCastlePossible()) {
+                Move rookMove = new Move(new Square(this.getSquare(),-4,0), new Square(this.getSquare(),-1,0));
+                Move move = new Move(this.getSquare(), new Square(this.getSquare(), -2, 0), rookMove);
+                arrayList.add(move);
             }
         }
-
-        ArrayList<Square> squaresBetween = new ArrayList<>();
-
-        squaresBetween.add(new Square(getX()+1, getY()));
-        squaresBetween.add(new Square(getX()+2, getY()));
-
-        if(getGame().getFigure(getX()+1,getY()) == null && getGame().getFigure(getX()+2,getY()) == null) {
-            if(!hasMoved() && !getGame().getFigure(getX()+3, getY()).hasMoved()) {
-                arrayList.add(new Move(getX(),getY(),getX()+2,getY(), new Move(getX()+3, getY(),getX()+1, getY())));
-            }
-        }
-
-        if(getGame().getFigure(getX()-1,getY()) == null && getGame().getFigure(getX()-2,getY()) == null && getGame().getFigure(getX()-3,getY()) == null) {
-            if(!hasMoved() && !getGame().getFigure(getX()-4, getY()).hasMoved()) {
-                arrayList.add(new Move(getX(),getY(),getX()-2,getY(), new Move(getX()-4, getY(), getX() - 1, getY())));
-            }
-        }
-
 
 
         return arrayList;

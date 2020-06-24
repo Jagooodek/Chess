@@ -7,27 +7,29 @@ import java.util.ArrayList;
 
 public class Pawn extends Figure {
 
-    public Pawn(int x, int y, boolean isWhite, Game game) {
-        super(x, y, isWhite, game);
+    public Pawn(Square square, boolean isWhite, Game game) {
+        super(square, isWhite, game);
     }
 
     @Override
     public ArrayList<Move> getPossibleMoves() {
 
-        int x = this.getX();
-        int y = this.getY();
+
         ArrayList<Move> arrayList = new ArrayList<>();
         Move move;
 
-        move = new Move(x,y,x,this.isWhite()?y+1:y-1);
-        if(this.isPossibleMove(move)) {
+        move = new Move(this.getSquare(),new Square(this.getSquare(), 0, (this.isWhite()?1:-1)));
+        if(this.isLegalMove(move)) {
             arrayList.add(move);
-            move = new Move(x,y,x,this.isWhite()?y+2:y-2);
-            if(!this.hasMoved() && isPossibleMove(move))
+            move = new Move(this.getSquare(),new Square(this.getSquare(), 0, (this.isWhite()?2:-2)));
+            if(!this.hasMoved() && isLegalMove(move))
                 arrayList.add(move);
         }
 
-        arrayList.addAll(getPossibleCaptures());
+        for(Move m:getPossibleCaptures()) {
+            if(this.isLegalCapture(m))
+                arrayList.add(m);
+        }
         return arrayList;
     }
 
@@ -40,15 +42,14 @@ public class Pawn extends Figure {
     public ArrayList<Move> getPossibleCaptures() {
 
         ArrayList<Move> arrayList = new ArrayList<>();
-        int x = this.getX();
-        int y = this.getY();
+
         Move move;
-        move = new Move(x,y,this.isWhite()?x+1:x-1,this.isWhite()?y+1:y-1);
-        if(isPossibleCapture(move))
+        move = new Move(this.getSquare(), new Square(this.getSquare(), (isWhite()?1:-1), (isWhite()?1:-1)));
+        if(move.isPossible())
             arrayList.add(move);
 
-        move = new Move(x,y,this.isWhite()?x-1:x+1,this.isWhite()?y+1:y-1);
-        if(isPossibleCapture(move))
+        move = new Move(this.getSquare(), new Square(this.getSquare(), (isWhite()?-1:1), (isWhite()?1:-1)));
+        if(move.isPossible())
             arrayList.add(move);
         return arrayList;
     }

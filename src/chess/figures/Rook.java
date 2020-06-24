@@ -7,8 +7,9 @@ import java.util.ArrayList;
 
 public class Rook extends Figure {
 
-    public Rook(int x, int y, boolean isWhite, Game game) {
-        super(x, y, isWhite, game);
+
+    public Rook(Square square, boolean isWhite, Game game) {
+        super(square, isWhite, game);
     }
 
     @Override
@@ -17,57 +18,57 @@ public class Rook extends Figure {
         ArrayList<Move> arrayList = new ArrayList<Move>();
         Move move;
 
-        int x = this.getX();
-        int y = this.getY();
+        int x = this.getSquare().getX();
+        int y = this.getSquare().getY();
 
         while(x++ <= 8) {
-            move = new Move(this.getX(), this.getY(), x, y);
-            if(isPossibleMove(move)) {
+            move = new Move(this.getSquare(),new Square(x, y));
+            if(isLegalMove(move)) {
                 arrayList.add(move);
             } else {
-                if(isPossibleCapture(move))
+                if(isLegalCapture(move))
                     arrayList.add(move);
                 break;
             }
         }
 
-        x = getX();
-        y = getY();
+        x = this.getSquare().getX();
+        y = this.getSquare().getY();
 
         while(x-- >= 1) {
-            move = new Move(this.getX(), this.getY(), x, y);
-            if(isPossibleMove(move)) {
+            move = new Move(this.getSquare(),new Square(x, y));
+            if(isLegalMove(move)) {
                 arrayList.add(move);
             } else {
-                if(isPossibleCapture(move))
+                if(isLegalCapture(move))
                     arrayList.add(move);
                 break;
             }
         }
 
-        x = getX();
-        y = getY();
+        x = this.getSquare().getX();
+        y = this.getSquare().getY();
 
         while(y-- >= 1) {
-            move = new Move(this.getX(), this.getY(), x, y);
-            if(isPossibleMove(move)) {
+            move = new Move(this.getSquare(),new Square(x, y));
+            if(isLegalMove(move)) {
                 arrayList.add(move);
             } else {
-                if(isPossibleCapture(move))
+                if(isLegalCapture(move))
                     arrayList.add(move);
                 break;
             }
         }
 
-        x = getX();
-        y = getY();
+        x = this.getSquare().getX();
+        y = this.getSquare().getY();
 
         while(y++ <= 8) {
-            move = new Move(this.getX(), this.getY(), x, y);
-            if(isPossibleMove(move)) {
+            move = new Move(this.getSquare(),new Square(x, y));
+            if(isLegalMove(move)) {
                 arrayList.add(move);
             } else {
-                if(isPossibleCapture(move))
+                if(isLegalCapture(move))
                     arrayList.add(move);
                 break;
             }

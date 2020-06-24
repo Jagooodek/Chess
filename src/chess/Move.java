@@ -1,16 +1,15 @@
 package chess;
 
 import chess.figures.Figure;
+import chess.figures.Square;
 
 public class Move {
-    private int x1;
-    private int x2;
-    private int y1;
-    private int y2;
+    private Square square1;
+    private Square square2;
     private boolean castle;
     private Move castleMove;
     private String promotionFigure;
-
+    private Figure capturedFigure;
 
     public boolean isCastle() {
         return castle;
@@ -20,41 +19,36 @@ public class Move {
         return castleMove;
     }
 
-    public Move(int x1, int y1, int x2, int y2) {
-        this.x1 = x1;
-        this.x2 = x2;
-        this.y1 = y1;
-        this.y2 = y2;
+    public Move(Square square1, Square square2) {
+        this.square1 = square1;
+        this.square2 = square2;
         this.castle = false;
         promotionFigure = null;
     }
 
-    public Move(int x1, int y1, int x2, int y2, Move castleMove) {
-        this.x1 = x1;
-        this.x2 = x2;
-        this.y1 = y1;
-        this.y2 = y2;
+    public Move(Square square1, Square square2, Move castleMove) {
+        this.square1 = square1;
+        this.square2 = square2;
         this.castle = castleMove != null;
         if(castle) {
             this.castleMove = castleMove;
         }
         promotionFigure = null;
+        capturedFigure = null;
     }
 
-    public int getX1() {
-        return x1;
+    public boolean isPossible() {
+        if(square1.isLegal() && square2.isLegal())
+            return true;
+        return false;
     }
 
-    public int getX2() {
-        return x2;
+    public Square getSquare1() {
+        return square1;
     }
 
-    public int getY1() {
-        return y1;
-    }
-
-    public int getY2() {
-        return y2;
+    public Square getSquare2() {
+        return square2;
     }
 
     public void setPromotionFigure(String promotionFigure) {
@@ -65,13 +59,28 @@ public class Move {
         return promotionFigure;
     }
 
+    public Figure getCapturedFigure() {
+        return capturedFigure;
+    }
+
+    public void setCapturedFigure(Figure capturedFigure) {
+        this.capturedFigure = capturedFigure;
+    }
+
     @Override
     public boolean equals(Object o) {
         if(!(o instanceof Move))
             return false;
         Move move = (Move)o;
-        if(this.x1 == move.getX1() && this.x2 == move.getX2() && this.y1 == move.getY1() && this.y2 == move.getY2())
+        if(square1.equals(move.square1) && square2.equals(move.square2))
             return true;
         return false;
     }
+
+    @Override
+    public String toString() {
+        String s = square1 + " " + square2;
+        return s;
+    }
+
 }

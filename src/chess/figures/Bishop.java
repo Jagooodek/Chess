@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class Bishop extends Figure {
 
-    public Bishop(int x, int y, boolean isWhite, Game game) {
-        super(x, y, isWhite, game);
+    public Bishop(Square square, boolean isWhite, Game game) {
+        super(square, isWhite, game);
     }
 
     @Override
@@ -16,54 +16,54 @@ public class Bishop extends Figure {
         ArrayList<Move> arrayList = new ArrayList<Move>();
 
         Move move;
-        int x = this.getX();
-        int y = this.getY();
+        int x = this.getSquare().getX();
+        int y = this.getSquare().getY();
 
         while(x-- >= 1 && y-- >= 1) {
-            move = new Move(this.getX(), this.getY(), x, y);
-            if(isPossibleMove(move)) {
+            move = new Move(this.getSquare(), new Square(x,y));
+            if(isLegalMove(move)) {
                 arrayList.add(move);
             } else {
-                if(isPossibleCapture(move))
+                if(isLegalCapture(move))
                     arrayList.add(move);
                 break;
             }
         }
 
-        x = this.getX();
-        y = this.getY();
+        x = this.getSquare().getX();
+        y = this.getSquare().getY();
         while(x-- >= 1 && y++ <= 8) {
-            move = new Move(this.getX(), this.getY(), x, y);
-            if(isPossibleMove(move)) {
+            move = new Move(this.getSquare(), new Square(x,y));
+            if(isLegalMove(move)) {
                 arrayList.add(move);
             } else {
-                if(isPossibleCapture(move))
+                if(isLegalCapture(move))
                     arrayList.add(move);
                 break;
             }
         }
 
-        x = this.getX();
-        y = this.getY();
+        x = this.getSquare().getX();
+        y = this.getSquare().getY();
         while(x++ <= 8 && y++ <= 8) {
-            move = new Move(this.getX(), this.getY(), x, y);
-            if(isPossibleMove(move)) {
+            move = new Move(this.getSquare(), new Square(x,y));
+            if(isLegalMove(move)) {
                 arrayList.add(move);
             } else {
-                if(isPossibleCapture(move))
+                if(isLegalCapture(move))
                     arrayList.add(move);
                 break;
             }
         }
 
-        x = this.getX();
-        y = this.getY();
+        x = this.getSquare().getX();
+        y = this.getSquare().getY();
         while(x++ <= 8 && y-- >= 1) {
-            move = new Move(this.getX(), this.getY(), x, y);
-            if(isPossibleMove(move)) {
+            move = new Move(this.getSquare(), new Square(x,y));
+            if(isLegalMove(move)) {
                 arrayList.add(move);
             } else {
-                if(isPossibleCapture(move))
+                if(isLegalCapture(move))
                     arrayList.add(move);
                 break;
             }
@@ -72,6 +72,7 @@ public class Bishop extends Figure {
 
         return arrayList;
     }
+
 
     @Override
     public String toString() {

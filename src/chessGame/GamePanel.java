@@ -1,10 +1,9 @@
 package chessGame;
 
 import chess.Game;
-import chess.Move;
-import chess.figures.Figure;
-import chess.figures.Knight;
+import chess.Move;;
 import chess.figures.Pawn;
+import chess.figures.Square;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,33 +11,44 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class chessPanel {
+public class GamePanel{
 
-    private JFrame gameFrame;
     private ArrayList<Tile> tiles;
     private Game game;
     private Tile selectedTile;
     private Boolean whiteTurn;
+    private JFrame gameFrame;
 
-    chessPanel() {
+    public static void main(String[] args) {
+        GamePanel gamePanel = new GamePanel();
+
+        JFrame tmp = new JFrame();
+        tmp.setVisible(true);
+        JButton jButton = new JButton("Undo last move");
+        jButton.addActionListener(actionEvent -> gamePanel.undoLastMove());
+        tmp.setBounds(1200,500,500,500);
+        tmp.add(jButton);
+        tmp.pack();
+        tmp.setDefaultCloseOperation(3);
+    }
+
+    GamePanel() {
+        super();
         initGameFrame();
         initTiles();
         game = new Game();
         refresh();
     }
 
-    public static void main(String[] args) {
-        new chessPanel();
-    }
-
     private void initGameFrame() {
         gameFrame = new JFrame("Chess");
-        gameFrame.setDefaultCloseOperation(3);
+        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setVisible(true);
         GridLayout gridLayout = new GridLayout(8,8,0,0);
         gameFrame.setLayout(gridLayout);
         gameFrame.setSize(1024,1024);
         gameFrame.setResizable(false);
+
     }
 
     private void initTiles() {
@@ -47,7 +57,7 @@ public class chessPanel {
 
         for (int i = 7; i >= 0; i--) {
             for (int j = 0; j < 8; j ++) {
-                Tile tile = new Tile(j + 1, i + 1, 128, i % 2 ==j % 2);
+                Tile tile = new Tile(new Square(j + 1, i + 1), 128, i % 2 ==j % 2);
                 tiles.add(tile);
                 tile.addMouseListener(new TileListener(tile));
                 gameFrame.add(tile);
@@ -56,9 +66,9 @@ public class chessPanel {
         selectedTile = null;
     }
 
-    private Tile getTile(int x, int y) {
+    private Tile getTile(Square square) {
         for(Tile tile:tiles) {
-            if(tile.getTileX() == x && tile.getTileY() == y)
+            if(square.equals(tile.getSquare()))
                 return tile;
         }
         return null;
@@ -66,12 +76,30 @@ public class chessPanel {
 
     private void refresh() {
         for(Tile tile: tiles) {
-            tile.setFigure(game.getFigure(tile.getTileX(), tile.getTileY()));
+            tile.setFigure(game.getFigure(tile.getSquare()));
             tile.repaint();
         }
         whiteTurn = game.isWhiteTurn();
-        if(game.isEnd())
-            gameFrame.removeAll();
+        if(game.getStatus() != 0) {
+            String string = "";
+            switch (game.getStatus()) {
+                case Game.WHITE_WON:
+                    string = "White won";
+                    break;
+                case Game.BLACK_WON:
+                    string = "Black won";
+                    break;
+                case Game.DRAW:
+                    string = "Draw";
+                    break;
+                default:
+                    string = "??";
+                    break;
+
+            }
+            JOptionPane.showMessageDialog(gameFrame,string);
+        }
+
     }
 
     private void select(Tile tile) {
@@ -79,9 +107,9 @@ public class chessPanel {
 
              selectedTile = tile;
              tile.setSelected(true);
-             ArrayList<Move> moves = tile.getFigure().getPossibleMoves();
+             ArrayList<Move> moves = tile.getFigure().getLegalMoves();
              for(Move move:moves) {
-                 getTile(move.getX2(), move.getY2()).setMove(move);
+                 getTile(move.getSquare2()).setMove(move);
              }
          } else {
              if(selectedTile == tile) {
@@ -91,7 +119,7 @@ public class chessPanel {
                      t.setMove(null);
              } else {
                  if(tile.getMove() != null){
-                     if((tile.getMove().getY2() == 8 || tile.getMove().getY2() == 1) && game.getFigure(tile.getMove().getX1(), tile.getMove().getY1()) instanceof Pawn) {
+                     if((tile.getMove().getSquare2().getY() == 8 || tile.getMove().getSquare2().getY() == 1) && game.getFigure(selectedTile.getSquare()) instanceof Pawn) {
                          String [] possibilities = {"Knight", "Bishop", "Queen", "Rook"};
                          String s = (String)JOptionPane.showInputDialog(gameFrame, "Choose figure to replace your pawn.", "Pawn promotion",  JOptionPane.QUESTION_MESSAGE, null,  possibilities, "Knight");
                          tile.getMove().setPromotionFigure(s);
@@ -105,6 +133,11 @@ public class chessPanel {
              }
          }
          refresh();
+    }
+
+    public void undoLastMove() {
+        game.undoLastMove();
+        refresh();
     }
 
     class TileListener extends MouseAdapter {
