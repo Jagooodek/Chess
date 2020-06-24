@@ -23,6 +23,11 @@ public class King extends Figure {
             }
         }
 
+        ArrayList<Square> squaresBetween = new ArrayList<>();
+
+        squaresBetween.add(new Square(getX()+1, getY()));
+        squaresBetween.add(new Square(getX()+2, getY()));
+
         if(getGame().getFigure(getX()+1,getY()) == null && getGame().getFigure(getX()+2,getY()) == null) {
             if(!hasMoved() && !getGame().getFigure(getX()+3, getY()).hasMoved()) {
                 arrayList.add(new Move(getX(),getY(),getX()+2,getY(), new Move(getX()+3, getY(),getX()+1, getY())));

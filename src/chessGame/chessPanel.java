@@ -3,6 +3,8 @@ package chessGame;
 import chess.Game;
 import chess.Move;
 import chess.figures.Figure;
+import chess.figures.Knight;
+import chess.figures.Pawn;
 
 import javax.swing.*;
 import java.awt.*;
@@ -89,6 +91,11 @@ public class chessPanel {
                      t.setMove(null);
              } else {
                  if(tile.getMove() != null){
+                     if((tile.getMove().getY2() == 8 || tile.getMove().getY2() == 1) && game.getFigure(tile.getMove().getX1(), tile.getMove().getY1()) instanceof Pawn) {
+                         String [] possibilities = {"Knight", "Bishop", "Queen", "Rook"};
+                         String s = (String)JOptionPane.showInputDialog(gameFrame, "Choose figure to replace your pawn.", "Pawn promotion",  JOptionPane.QUESTION_MESSAGE, null,  possibilities, "Knight");
+                         tile.getMove().setPromotionFigure(s);
+                     }
                      game.doMove(tile.getMove());
                      selectedTile.setSelected(false);
                      selectedTile = null;

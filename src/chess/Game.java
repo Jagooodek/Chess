@@ -88,12 +88,43 @@ public class Game {
         figure.setX(move.getX2());
         figure.setY(move.getY2());
         figure.move();
-
-        if(move.isCastle()) {
-            doMove(move.getCastleMove());
+        if(move.getPromotionFigure() != null) {
+            Figure promotionFigure = figure;
+            switch (move.getPromotionFigure()) {
+                case "Bishop":
+                    promotionFigure = new Bishop(figure.getX(), figure.getY(), figure.isWhite(), figure.getGame());
+                    break;
+                case "Knight":
+                    promotionFigure = new Knight(figure.getX(), figure.getY(), figure.isWhite(), figure.getGame());
+                    break;
+                case "Queen":
+                    promotionFigure = new Queen(figure.getX(), figure.getY(), figure.isWhite(), figure.getGame());
+                    break;
+                case "Rook":
+                    promotionFigure = new Rook(figure.getX(), figure.getY(), figure.isWhite(), figure.getGame());
+                    break;
+            }
+            figures.remove(figure);
+            figures.add(promotionFigure);
         }
 
-        whiteTurn = !whiteTurn;
+        if(move.isCastle())
+            doMove(move.getCastleMove());
+        else
+            whiteTurn = !whiteTurn;
+    }
+
+    public ArrayList<Square> getPossibleCaptureSquares() {
+        ArrayList<Square> arrayList = new ArrayList<>();
+        for(Figure figure:figures) {
+            if(figure.isWhite() != isWhiteTurn()) {
+                for(Move move: figure.getPossibleCaptures()) {
+                    Square square = new Square(move.getX2(), move.getY2());
+                    arrayList.add(square);
+                }
+            }
+        }
+        return arrayList;
     }
 
 }

@@ -1,5 +1,7 @@
 package chess;
 
+import chess.figures.Figure;
+
 public class Move {
     private int x1;
     private int x2;
@@ -7,6 +9,7 @@ public class Move {
     private int y2;
     private boolean castle;
     private Move castleMove;
+    private String promotionFigure;
 
 
     public boolean isCastle() {
@@ -23,6 +26,7 @@ public class Move {
         this.y1 = y1;
         this.y2 = y2;
         this.castle = false;
+        promotionFigure = null;
     }
 
     public Move(int x1, int y1, int x2, int y2, Move castleMove) {
@@ -34,6 +38,7 @@ public class Move {
         if(castle) {
             this.castleMove = castleMove;
         }
+        promotionFigure = null;
     }
 
     public int getX1() {
@@ -50,6 +55,14 @@ public class Move {
 
     public int getY2() {
         return y2;
+    }
+
+    public void setPromotionFigure(String promotionFigure) {
+        this.promotionFigure = promotionFigure;
+    }
+
+    public String getPromotionFigure() {
+        return promotionFigure;
     }
 
     @Override

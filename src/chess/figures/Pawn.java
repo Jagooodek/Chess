@@ -27,17 +27,8 @@ public class Pawn extends Figure {
                 arrayList.add(move);
         }
 
-        move = new Move(x,y,this.isWhite()?x+1:x-1,this.isWhite()?y+1:y-1);
-        if(isPossibleCapture(move))
-            arrayList.add(move);
-
-        move = new Move(x,y,this.isWhite()?x-1:x+1,this.isWhite()?y+1:y-1);
-        if(isPossibleCapture(move))
-            arrayList.add(move);
-
+        arrayList.addAll(getPossibleCaptures());
         return arrayList;
-
-
     }
 
     @Override
@@ -45,4 +36,20 @@ public class Pawn extends Figure {
         return (isWhite()?"w":"b") + "_pawn";
     }
 
+    @Override
+    public ArrayList<Move> getPossibleCaptures() {
+
+        ArrayList<Move> arrayList = new ArrayList<>();
+        int x = this.getX();
+        int y = this.getY();
+        Move move;
+        move = new Move(x,y,this.isWhite()?x+1:x-1,this.isWhite()?y+1:y-1);
+        if(isPossibleCapture(move))
+            arrayList.add(move);
+
+        move = new Move(x,y,this.isWhite()?x-1:x+1,this.isWhite()?y+1:y-1);
+        if(isPossibleCapture(move))
+            arrayList.add(move);
+        return arrayList;
+    }
 }

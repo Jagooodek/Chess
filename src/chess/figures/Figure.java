@@ -52,6 +52,10 @@ public abstract class Figure {
 
     public abstract ArrayList<Move> getPossibleMoves();
 
+    public ArrayList<Move> getPossibleCaptures() {
+        return getPossibleMoves();
+    }
+
     public abstract String toString();
 
     public int getX() {
